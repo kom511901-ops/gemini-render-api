@@ -20,6 +20,22 @@ app.get("/", (req, res) => {
   res.send("OK");
 });
 
+app.get("/models", async (req, res) => {
+  try {
+    const url =
+      "https://generativelanguage.googleapis.com/v1beta/models?key=" +
+      process.env.GEMINI_API_KEY;
+
+    const r = await fetch(url);
+    const data = await r.json();
+
+    res.status(r.status).json(data);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+
 app.post("/generate", async (req, res) => {
   try {
     const prompt = req.body.prompt;
